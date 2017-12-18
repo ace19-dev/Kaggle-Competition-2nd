@@ -232,11 +232,17 @@ def create_conv_model(fingerprint_input, model_settings, is_training):
   #first_conv = BatchNorm(first_conv, is_training, name='bn1')
   first_relu = tf.nn.relu(first_conv)
   #first_relu = LeakyReLU(first_conv)
+
+  print('first_relu : ', first_relu)
+
+
   if is_training:
     first_dropout = tf.nn.dropout(first_relu, dropout_prob)
   else:
     first_dropout = first_relu
   max_pool = tf.nn.max_pool(first_dropout, [1, 2, 2, 1], [1, 2, 2, 1], 'SAME')
+
+  print('max_pool : ', max_pool)
 
   second_filter_width = 4
   second_filter_height = 10
@@ -255,6 +261,10 @@ def create_conv_model(fingerprint_input, model_settings, is_training):
   #second_conv = BatchNorm(second_conv, is_training, name='bn2')
   second_relu = tf.nn.relu(second_conv)
   #second_relu = LeakyReLU(second_conv)
+
+  print('second_relu : ', second_relu)
+
+
   if is_training:
     second_dropout = tf.nn.dropout(second_relu, dropout_prob)
   else:
@@ -271,6 +281,7 @@ def create_conv_model(fingerprint_input, model_settings, is_training):
   flattened_second_conv = tf.reshape(second_dropout,
                                      [-1, second_conv_element_count])
 
+  print('flattened_second_conv : ', flattened_second_conv)
 
   # label_count = 12 = x + 2
   label_count = model_settings['label_count']
@@ -279,6 +290,9 @@ def create_conv_model(fingerprint_input, model_settings, is_training):
           [second_conv_element_count, label_count], stddev=0.01))
   final_fc_bias = tf.Variable(tf.zeros([label_count]))
   final_fc = tf.matmul(flattened_second_conv, final_fc_weights) + final_fc_bias
+
+  print('final_fc : ', final_fc)
+
   if is_training:
     return final_fc, dropout_prob
   else:
@@ -412,7 +426,7 @@ def create_low_layer_mobilenet_model(fingerprint_input, model_settings, is_train
   print('after fifth_relu', fifth_relu)
 
 
-  avg_pool = tf.nn.avg_pool(fifth_relu, [1, 5, 5, 1], [1, 1, 1, 1], 'VALID')
+  avg_pool = tf.nn.avg_pool(fifth_relu, [1, 7, 7, 1], [1, 1, 1, 1], 'VALID')
 
   last_conv_shape = avg_pool.get_shape()
   last_conv_output_width = last_conv_shape[2]
@@ -429,6 +443,8 @@ def create_low_layer_mobilenet_model(fingerprint_input, model_settings, is_train
                                      [-1, last_conv_element_count])
 
   print('after flattened_last_conv', flattened_last_conv)
+
+
 
   # label_count = 12 = x + 2
   label_count = model_settings['label_count']

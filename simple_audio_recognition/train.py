@@ -122,12 +122,15 @@ def main(_):
       FLAGS.model_architecture,
       is_training=True)
 
+  #print(' ... ', logits[0][0].eval())
+  print(' ... ', logits[1])
+
   # Define loss and optimizer
   ground_truth_input = tf.placeholder(
       tf.float32, [None, label_count], name='groundtruth_input')
 
-  # shape of ground_truth_input : [2, ]
-  # print(tf.shape(ground_truth_input))
+  # shape of ground_truth_input : [12, 1]
+  # print(ground_truth_input)
 
   # Optionally we can add runtime checks to spot when NaNs or other symptoms of
   # numerical errors start occurring during training.
@@ -150,6 +153,7 @@ def main(_):
 
   predicted_indices = tf.argmax(logits, 1)
   expected_indices = tf.argmax(ground_truth_input, 1)
+
   correct_prediction = tf.equal(predicted_indices, expected_indices)
   confusion_matrix = tf.confusion_matrix(expected_indices, predicted_indices, num_classes=label_count)
   evaluation_step = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
@@ -200,6 +204,16 @@ def main(_):
     train_fingerprints, train_ground_truth = audio_processor.get_data(
         FLAGS.batch_size, 0, model_settings, FLAGS.background_frequency,
         FLAGS.background_volume, time_shift_samples, 'training', sess)
+
+    #print(i, '  ...  ', train_fingerprints)
+
+
+
+    #for i in range(len(train_ground_truth)):
+    #  for j in range(len(train_ground_truth[i])):
+    #    print(train_ground_truth[i][j], end=' ')
+    #  print()
+
     # Run the graph with this batch of training data.
     train_summary, train_accuracy, cross_entropy_value, _, _ = sess.run(
         [
