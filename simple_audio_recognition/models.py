@@ -426,7 +426,7 @@ def create_low_layer_mobilenet_model(fingerprint_input, model_settings, is_train
   print('after fifth_relu', fifth_relu)
 
 
-  avg_pool = tf.nn.avg_pool(fifth_relu, [1, 7, 7, 1], [1, 1, 1, 1], 'VALID')
+  avg_pool = tf.nn.avg_pool(fifth_relu, [1, 9, 9, 1], [1, 1, 1, 1], 'VALID')
 
   last_conv_shape = avg_pool.get_shape()
   last_conv_output_width = last_conv_shape[2]
