@@ -39,7 +39,7 @@ from tensorflow.contrib.framework.python.ops import audio_ops as contrib_audio
 FLAGS = None
 
 
-def load_graph(filename):
+def load_graph(frozen_graph_filename):
   """Unpersists graph from file as default graph."""
   #with tf.gfile.FastGFile(filename, 'rb') as f:
 #    graph_def = tf.GraphDef()
