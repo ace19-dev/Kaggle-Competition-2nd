@@ -41,11 +41,19 @@ FLAGS = None
 
 def load_graph(filename):
   """Unpersists graph from file as default graph."""
-  with tf.gfile.FastGFile(filename, 'rb') as f:
+  #with tf.gfile.FastGFile(filename, 'rb') as f:
+#    graph_def = tf.GraphDef()
+#    graph_def.ParseFromString(f.read())
+#    tf.import_graph_def(graph_def, name='')
+
+  with tf.gfile.GFile(frozen_graph_filename, "rb") as f:
     graph_def = tf.GraphDef()
     graph_def.ParseFromString(f.read())
-    tf.import_graph_def(graph_def, name='')
 
+  with tf.Graph().as_default() as graph:
+    tf.import_graph_def(graph_def, name="prefix")
+
+  return graph
 
 def load_labels(filename):
   """Read in labels, one label per line."""
