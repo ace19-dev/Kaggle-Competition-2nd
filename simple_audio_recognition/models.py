@@ -431,13 +431,12 @@ def create_low_layer_mobilenet_model(fingerprint_input, model_settings, is_train
   sixth_bias = tf.Variable(tf.zeros([128]))
 
   sixth_conv = tf.nn.conv2d(fifth_relu, sixth_weights, [1, 1, 1, 1],
-                             'VALID') + sixth_bias
+                             'SAME') + sixth_bias
 
   sixth_bn = BatchNorm(sixth_conv, is_training, name='bn6')
   sixth_relu = tf.nn.relu(sixth_bn)
 
   print('after sixth_relu', sixth_relu)
-
 
   seventh_weights = tf.get_variable("seventh_weights",
     shape=[one_filter_height, one_filter_width, 128, 128],
@@ -455,9 +454,21 @@ def create_low_layer_mobilenet_model(fingerprint_input, model_settings, is_train
   print('after seventh_relu', seventh_relu)
 
 
+  eighth_weights = tf.get_variable("eighth_weights",
+    shape=[deepwise_filter_height, deepwise_filter_width, 128, 128],
+    initializer=tf.contrib.layers.xavier_initializer())
 
+  eighth_bias = tf.Variable(tf.zeros([128]))
 
-  avg_pool = tf.nn.avg_pool(seventh_relu, [1, 7, 7, 1], [1, 1, 1, 1], 'VALID')
+  eighth_conv = tf.nn.conv2d(seventh_relu, eighth_weights, [1, 2, 2, 1],
+                             'VALID') + sixth_bias
+
+  eighth_bn = BatchNorm(eighth_conv, is_training, name='bn8')
+  eighth_relu = tf.nn.relu(eighth_bn)
+
+  print('after eighth_relu', eighth_relu)
+
+  avg_pool = tf.nn.avg_pool(eighth_relu, [1, 4, 4, 1], [1, 1, 1, 1], 'VALID')
 
   last_conv_shape = avg_pool.get_shape()
   last_conv_output_width = last_conv_shape[2]
