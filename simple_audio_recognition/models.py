@@ -23,6 +23,8 @@ import math
 
 import tensorflow as tf
 
+slim = tf.contrib.slim
+
 
 def prepare_model_settings(label_count, sample_rate, clip_duration_ms,
                            window_size_ms, window_stride_ms,
@@ -350,7 +352,7 @@ def create_low_layer_mobilenet_model(fingerprint_input, model_settings, is_train
   first_conv = tf.nn.conv2d(fingerprint_4d, first_weights, [1, 2, 2, 1],
                             'VALID') + first_bias
 
-  first_bn = BatchNorm(first_conv, is_training, name='bn1')
+  first_bn = slim.batch_norm(first_conv, is_training=is_training, scope='bn1')
   first_relu = tf.nn.relu(first_bn)
 
   print('after first_relu', first_relu)
@@ -372,7 +374,7 @@ def create_low_layer_mobilenet_model(fingerprint_input, model_settings, is_train
   second_conv = tf.nn.conv2d(first_relu, second_weights, [1, 1, 1, 1],
                             'SAME') + second_bias
 
-  second_bn = BatchNorm(second_conv, is_training, name='bn2')
+  second_bn = slim.batch_norm(second_conv, is_training=is_training, scope='bn2')
   second_relu = tf.nn.relu(second_bn)
 
   print('after second_relu', second_relu)
@@ -390,7 +392,7 @@ def create_low_layer_mobilenet_model(fingerprint_input, model_settings, is_train
   third_conv = tf.nn.conv2d(second_relu, third_weights, [1, 1, 1, 1],
                              'SAME') + third_bias
 
-  third_bn = BatchNorm(third_conv, is_training, name='bn3')
+  third_bn = slim.batch_norm(third_conv, is_training=is_training, scope='bn3')
   third_relu = tf.nn.relu(third_bn)
 
   print('after third_relu', third_relu)
@@ -404,7 +406,7 @@ def create_low_layer_mobilenet_model(fingerprint_input, model_settings, is_train
   fourth_conv = tf.nn.conv2d(third_relu, fourth_weights, [1, 2, 2, 1],
                              'VALID') + fourth_bias
 
-  fourth_bn = BatchNorm(fourth_conv, is_training, name='bn4')
+  fourth_bn = slim.batch_norm(fourth_conv, is_training=is_training, scope='bn4')
   fourth_relu = tf.nn.relu(fourth_bn)
 
   print('after fourth_relu', fourth_relu)
@@ -419,7 +421,7 @@ def create_low_layer_mobilenet_model(fingerprint_input, model_settings, is_train
                              'SAME') + fifth_bias
 
 
-  fifth_bn = BatchNorm(fifth_conv, is_training, name='bn5')
+  fifth_bn = slim.batch_norm(fifth_conv, is_training=is_training, scope='bn5')
   fifth_relu = tf.nn.relu(fifth_bn)
 
   print('after fifth_relu', fifth_relu)
@@ -433,7 +435,7 @@ def create_low_layer_mobilenet_model(fingerprint_input, model_settings, is_train
   sixth_conv = tf.nn.conv2d(fifth_relu, sixth_weights, [1, 1, 1, 1],
                              'SAME') + sixth_bias
 
-  sixth_bn = BatchNorm(sixth_conv, is_training, name='bn6')
+  sixth_bn = slim.batch_norm(sixth_conv, is_training=is_training, scope='bn6')
   sixth_relu = tf.nn.relu(sixth_bn)
 
   print('after sixth_relu', sixth_relu)
@@ -448,7 +450,7 @@ def create_low_layer_mobilenet_model(fingerprint_input, model_settings, is_train
                              'SAME') + seventh_bias
 
 
-  seventh_bn = BatchNorm(seventh_conv, is_training, name='bn7')
+  seventh_bn = slim.batch_norm(seventh_conv, is_training=is_training, scope='bn7')
   seventh_relu = tf.nn.relu(seventh_bn)
 
   print('after seventh_relu', seventh_relu)
@@ -463,7 +465,7 @@ def create_low_layer_mobilenet_model(fingerprint_input, model_settings, is_train
   eighth_conv = tf.nn.conv2d(seventh_relu, eighth_weights, [1, 2, 2, 1],
                              'VALID') + sixth_bias
 
-  eighth_bn = BatchNorm(eighth_conv, is_training, name='bn8')
+  eighth_bn = slim.batch_norm(eighth_conv, is_training=is_training, scope='bn8')
   eighth_relu = tf.nn.relu(eighth_bn)
 
   print('after eighth_relu', eighth_relu)
