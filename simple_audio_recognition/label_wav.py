@@ -141,9 +141,9 @@ if __name__ == '__main__':
       help='Number of results to show.')
   parser.add_argument(
       '--input_file',
-      type=int,
+      type=str,
       default='',
-      help='Number of results to show.')
+      help='input file name')
 
   FLAGS, unparsed = parser.parse_known_args()
   tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)
