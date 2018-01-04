@@ -107,9 +107,9 @@ def label_wav(wav, labels, graph, input_name, output_name, how_many_labels, inpu
       wav_data = wav_file.read()
     result_string = run_graph(wav_data, labels_list, input_name, output_name, how_many_labels)
     print(' result : ', result_string)
-    wr.writerow([1, "김정수", False])
 
   f.close()
+  wr.writerow([1, "김정수", False])
   result_file.close()
 
 def load_csv(filename):
