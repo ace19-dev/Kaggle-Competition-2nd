@@ -94,13 +94,22 @@ def label_wav(wav, labels, graph, input_name, output_name, how_many_labels):
 
   labels_list = load_labels(labels)
 
+
   # load graph, which is stored in the default session
   load_graph(graph)
 
-  with open(wav, 'rb') as wav_file:
-    wav_data = wav_file.read()
+  #load_csv(FLAGS.input_file)
 
-  run_graph(wav_data, labels_list, input_name, output_name, how_many_labels)
+  f = open(filename, 'r', encoding='utf-8')
+  rdr = csv.reader(f)
+  for line in rdr:
+    print(line[0])
+    wav_full = wav + line[0]
+    with open(wav_full, 'rb') as wav_file:
+      wav_data = wav_file.read()
+    run_graph(wav_data, labels_list, input_name, output_name, how_many_labels)
+  f.close()
+
 
 def load_csv(filename):
   f = open(filename, 'r', encoding='utf-8')
@@ -111,9 +120,8 @@ def load_csv(filename):
 
 def main(_):
   """Entry point for script, converts flags to arguments."""
-  #label_wav(FLAGS.wav, FLAGS.labels, FLAGS.graph, FLAGS.input_name,
-  #        FLAGS.output_name, FLAGS.how_many_labels)
-  load_csv(FLAGS.input_file)
+  label_wav(FLAGS.wav, FLAGS.labels, FLAGS.graph, FLAGS.input_name, FLAGS.output_name, FLAGS.how_many_labels)
+
 
 
 if __name__ == '__main__':
