@@ -81,7 +81,7 @@ def run_graph(wav_data, labels, input_layer_name, output_layer_name,
     return 0
 
 
-def label_wav(wav, labels, graph, input_name, output_name, how_many_labels):
+def label_wav(wav, labels, graph, input_name, output_name, how_many_labels, input_file):
   """Loads the model and labels, and runs the inference to print predictions."""
   if not wav or not tf.gfile.Exists(wav):
     tf.logging.fatal('Audio file does not exist %s', wav)
@@ -100,7 +100,7 @@ def label_wav(wav, labels, graph, input_name, output_name, how_many_labels):
 
   #load_csv(FLAGS.input_file)
 
-  f = open(filename, 'r', encoding='utf-8')
+  f = open(input_file, 'r', encoding='utf-8')
   rdr = csv.reader(f)
   for line in rdr:
     print(line[0])
@@ -120,7 +120,7 @@ def load_csv(filename):
 
 def main(_):
   """Entry point for script, converts flags to arguments."""
-  label_wav(FLAGS.wav, FLAGS.labels, FLAGS.graph, FLAGS.input_name, FLAGS.output_name, FLAGS.how_many_labels)
+  label_wav(FLAGS.wav, FLAGS.labels, FLAGS.graph, FLAGS.input_name, FLAGS.output_name, FLAGS.how_many_labels, FLAGS.input_file)
 
 
 
