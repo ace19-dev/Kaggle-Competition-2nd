@@ -29,6 +29,7 @@ from __future__ import print_function
 
 import argparse
 import sys
+import csv
 
 import tensorflow as tf
 
@@ -101,11 +102,18 @@ def label_wav(wav, labels, graph, input_name, output_name, how_many_labels):
 
   run_graph(wav_data, labels_list, input_name, output_name, how_many_labels)
 
+def load_csv(filename):
+  f = open(filename, 'r', encoding='utf-8')
+  rdr = csv.reader(f)
+  for line in rdr:
+    print(line)
+  f.close()    
 
 def main(_):
   """Entry point for script, converts flags to arguments."""
-  label_wav(FLAGS.wav, FLAGS.labels, FLAGS.graph, FLAGS.input_name,
-            FLAGS.output_name, FLAGS.how_many_labels)
+  #label_wav(FLAGS.wav, FLAGS.labels, FLAGS.graph, FLAGS.input_name,
+  #        FLAGS.output_name, FLAGS.how_many_labels)
+  load_csv(FLAGS.input_file)
 
 
 if __name__ == '__main__':
@@ -130,6 +138,11 @@ if __name__ == '__main__':
       '--how_many_labels',
       type=int,
       default=3,
+      help='Number of results to show.')
+  parser.add_argument(
+      '--input_file',
+      type=int,
+      default=,
       help='Number of results to show.')
 
   FLAGS, unparsed = parser.parse_known_args()
