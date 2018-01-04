@@ -107,7 +107,7 @@ def label_wav(wav, labels, graph, input_name, output_name, how_many_labels, inpu
       wav_data = wav_file.read()
     result_string = run_graph(wav_data, labels_list, input_name, output_name, how_many_labels)
     print(' result : ', result_string)
-    wr.writerow('123', result_string])
+    wr.writerow(['123', result_string])
 
   f.close()
   result_file.close()
