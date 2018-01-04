@@ -97,7 +97,7 @@ def label_wav(wav, labels, graph, input_name, output_name, how_many_labels, inpu
   f = open(input_file, 'r', encoding='utf-8')
   rdr = csv.reader(f)
 
-  result_file = open(output_file, 'r', encoding='utf-8'))
+  result_file = open(output_file, 'r', encoding='utf-8')
   wr = csv.writer(result_file)
 
   for line in rdr:
