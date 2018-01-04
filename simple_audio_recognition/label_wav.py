@@ -61,10 +61,17 @@ def run_graph(wav_data, labels, input_layer_name, output_layer_name,
     #   dimension represents the input image count, and the other has
     #   predictions per class
     softmax_tensor = sess.graph.get_tensor_by_name(output_layer_name)
+    print('softmax_tensor  : ', softmax_tensor)
+
     predictions, = sess.run(softmax_tensor, {input_layer_name: wav_data})
+    print('predictions  : ', predictions)
+
 
     # Sort to show labels in order of confidence
     top_k = predictions.argsort()[-num_top_predictions:][::-1]
+    print('node ids : ', top_k)
+
+
     for node_id in top_k:
       human_string = labels[node_id]
       score = predictions[node_id]
