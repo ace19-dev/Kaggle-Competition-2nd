@@ -107,7 +107,7 @@ def load_csv(filename):
   rdr = csv.reader(f)
   for line in rdr:
     print(line)
-  f.close()    
+  f.close()
 
 def main(_):
   """Entry point for script, converts flags to arguments."""
@@ -142,7 +142,7 @@ if __name__ == '__main__':
   parser.add_argument(
       '--input_file',
       type=int,
-      default=,
+      default='',
       help='Number of results to show.')
 
   FLAGS, unparsed = parser.parse_known_args()
