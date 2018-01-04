@@ -75,7 +75,7 @@ def run_graph(wav_data, labels, input_layer_name, output_layer_name,
     return human_string
 
 
-def label_wav(wav, labels, graph, input_name, output_name, how_many_labels, input_file):
+def label_wav(wav, labels, graph, input_name, output_name, how_many_labels, input_file, output_file):
   """Loads the model and labels, and runs the inference to print predictions."""
   if not wav or not tf.gfile.Exists(wav):
     tf.logging.fatal('Audio file does not exist %s', wav)
@@ -96,6 +96,10 @@ def label_wav(wav, labels, graph, input_name, output_name, how_many_labels, inpu
 
   f = open(input_file, 'r', encoding='utf-8')
   rdr = csv.reader(f)
+
+  result_file = open(output_file, 'r', encoding='utf-8'))
+  wr = csv.writer(result_file)
+
   for line in rdr:
     print(line[0])
     wav_full = wav + line[0]
@@ -103,11 +107,10 @@ def label_wav(wav, labels, graph, input_name, output_name, how_many_labels, inpu
       wav_data = wav_file.read()
     result_string = run_graph(wav_data, labels_list, input_name, output_name, how_many_labels)
     print(' result : ', result_string)
-    writer = csv.writer(f, delimiter=',')
-    writer.writerow([line[0],result_string])
+    wr.writerow([line[0], result_string])
 
   f.close()
-
+  result_file.close()
 
 def load_csv(filename):
   f = open(filename, 'r', encoding='utf-8')
@@ -118,7 +121,7 @@ def load_csv(filename):
 
 def main(_):
   """Entry point for script, converts flags to arguments."""
-  label_wav(FLAGS.wav, FLAGS.labels, FLAGS.graph, FLAGS.input_name, FLAGS.output_name, FLAGS.how_many_labels, FLAGS.input_file)
+  label_wav(FLAGS.wav, FLAGS.labels, FLAGS.graph, FLAGS.input_name, FLAGS.output_name, FLAGS.how_many_labels, FLAGS.input_file, FLAGS.output_file)
 
 
 
@@ -150,6 +153,11 @@ if __name__ == '__main__':
       type=str,
       default='',
       help='input file name')
+  parser.add_argument(
+      '--output_file',
+      type=str,
+      default='',
+      help='output file name')
 
   FLAGS, unparsed = parser.parse_known_args()
   tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)
